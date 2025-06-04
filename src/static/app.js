@@ -20,13 +20,30 @@ document.addEventListener("DOMContentLoaded", () => {
 
         const spotsLeft = details.max_participants - details.participants.length;
 
-        // Lista de participantes formatada
+        // Lista de participantes com layout melhorado
         let participantsHtml = "";
         if (details.participants.length > 0) {
           participantsHtml = `
-            <p><strong>Inscritos:</strong></p>
-            <ul>
-              ${details.participants.map(email => `<li>${email}</li>`).join("")}
+            <div class="participants-list-label"><strong>Inscritos:</strong></div>
+            <ul class="participants-list">
+              ${details.participants
+                .map(
+                  email => {
+                    const initials = email
+                      .split("@")[0]
+                      .split(/[.\-_]/)
+                      .map(part => part[0]?.toUpperCase() || "")
+                      .join("")
+                      .slice(0, 2);
+                    return `
+                      <li class="participant-item">
+                        <span class="participant-avatar">${initials}</span>
+                        <span class="participant-email">${email}</span>
+                      </li>
+                    `;
+                  }
+                )
+                .join("")}
             </ul>
           `;
         } else {
